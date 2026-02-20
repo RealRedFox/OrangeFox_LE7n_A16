@@ -1,0 +1,47 @@
+name: OrangeFox Build for Pova 2 (A16)
+
+on:
+  workflow_dispatch: # Запуск кнопкой
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Cleanup space
+        run: sudo rm -rf /usr/share/dotnet /etc/mysql /usr/local/lib/android
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y bc build-essential flex bison g++-multilib gcc-multilib git gnupg gperf lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
+
+      - name: Sync OrangeFox Sources
+        run: |
+          mkdir ~/fox && cd ~/fox
+          git clone https://gitlab.com
+          cd scripts
+          bash setup/android_build_env.sh
+          # Качаем ветку fox_12.1 (база для современных GSI)
+          bash ../scripts/get_fox.sh ~/fox/fox_12.1
+
+      - name: Prepare Device Tree
+        run: |
+          # Переносим твою папку device в дерево сборки
+          cp -r ${GITHUB_WORKSPACE}/device ~/fox/fox_12.1/
+
+      - name: Start Build
+        run: |
+          cd ~/fox/fox_12.1
+          source build/envsetup.sh
+          # Пробуем универсальную команду lunch
+          lunch twrp_TECNO_LE7n-eng || lunch omni_TECNO_LE7n-eng
+          mka recoveryimage -j$(nproc)
+
+      - name: Upload Result
+        uses: actions/upload-artifact@v3
+        with:
+          name: OrangeFox-RedFox-Pova2
+          path: ~/fox/fox_12.1/out/target/product/TECNO_LE7n/*.img
