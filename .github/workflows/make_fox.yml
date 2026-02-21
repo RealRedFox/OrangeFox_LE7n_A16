@@ -21,11 +21,11 @@ jobs:
       - name: Sync OrangeFox Sources
         run: |
           mkdir ~/fox && cd ~/fox
-          git clone https://gitlab.com
+          git clone https://gitlab.com --depth=1
           cd scripts
           bash setup/android_build_env.sh
-          # Качаем ветку fox_12.1 (база для современных GSI)
-          bash ../scripts/get_fox.sh ~/fox/fox_12.1
+          # Принудительная синхронизация с пропуском тегов для скорости
+          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --force-sync --no-tags --no-clone-bundle
 
       - name: Prepare Device Tree
         run: |
