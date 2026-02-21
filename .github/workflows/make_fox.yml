@@ -41,7 +41,7 @@ jobs:
           mka recoveryimage -j$(nproc)
 
       - name: Upload Result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: OrangeFox-RedFox-Pova2
           path: ~/fox/fox_12.1/out/target/product/TECNO_LE7n/*.img
