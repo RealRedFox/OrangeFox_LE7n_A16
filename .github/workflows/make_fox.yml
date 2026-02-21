@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -24,8 +24,8 @@ jobs:
           git clone https://gitlab.com --depth=1
           cd scripts
           bash setup/android_build_env.sh
-          # Используем минимальный манифест для экономии места и трафика
-          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --minimal
+          # Добавляем --force-sync и --no-clone-bundle, чтобы пробить затык
+          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
 
       - name: Prepare Device Tree
         run: |
