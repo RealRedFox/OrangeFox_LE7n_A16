@@ -23,10 +23,9 @@ jobs:
           mkdir ~/fox && cd ~/fox
           git clone https://gitlab.com --depth=1
           cd scripts
-          # Базовая настройка среды
           bash setup/android_build_env.sh
-          # Качаем ТОЛЬКО нужную ветку 12.1, игнорируя всё остальное
-          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --no-tags --no-clone-bundle
+          # Используем минимальный манифест для экономии места и трафика
+          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --minimal
 
       - name: Prepare Device Tree
         run: |
