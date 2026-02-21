@@ -23,9 +23,10 @@ jobs:
           mkdir ~/fox && cd ~/fox
           git clone https://gitlab.com --depth=1
           cd scripts
+          # Базовая настройка среды
           bash setup/android_build_env.sh
-          # Принудительная синхронизация с пропуском тегов для скорости
-          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --force-sync --no-tags --no-clone-bundle
+          # Качаем ТОЛЬКО нужную ветку 12.1, игнорируя всё остальное
+          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --no-tags --no-clone-bundle
 
       - name: Prepare Device Tree
         run: |
