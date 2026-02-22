@@ -11,15 +11,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Cleanup space
-        run: sudo rm -rf /usr/share/dotnet /etc/mysql /usr/local/lib/android
+          run: sudo rm -rf /usr/share/dotnet /etc/mysql /usr/local/lib/android
 
       - name: Cleanup Disk Space
           uses: jlumbroso/free-disk-space@main
           with:
-          tool-cache: true
-          android: true
-          dotnet: true
-          haskell: false
+            tool-cache: true
+            android: true
+            dotnet: true
+            haskell: false
 
       - name: Install dependencies
         run: |
