@@ -13,6 +13,14 @@ jobs:
       - name: Cleanup space
         run: sudo rm -rf /usr/share/dotnet /etc/mysql /usr/local/lib/android
 
+      - name: Cleanup Disk Space
+          uses: jlumbroso/free-disk-space@main
+          with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: false
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -26,6 +34,7 @@ jobs:
           bash setup/android_build_env.sh
           # Добавляем --force-sync и --no-clone-bundle, чтобы пробить затык
           bash ../scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
 
       - name: Prepare Device Tree
         run: |
