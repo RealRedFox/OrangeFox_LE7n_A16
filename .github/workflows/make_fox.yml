@@ -29,7 +29,9 @@ jobs:
       - name: Sync OrangeFox Sources
         run: |
           mkdir ~/fox && cd ~/fox
-          git clone https://gitlab.com --depth=1
+          DOMAIN="gitlab.com"
+          REPO="OrangeFox/misc/scripts"
+          git clone https://$DOMAIN/$REPO.git -b master
           cd scripts
           bash setup/android_build_env.sh
           # Добавляем --force-sync и --no-clone-bundle, чтобы пробить затык
