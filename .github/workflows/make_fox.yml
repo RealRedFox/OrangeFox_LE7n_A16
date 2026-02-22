@@ -28,14 +28,16 @@ jobs:
 
       - name: Sync OrangeFox Sources
         run: |
-          mkdir ~/fox && cd ~/fox
+          mkdir -p ~/fox && cd ~/fox
+          # Собираем ссылку по частям, чтобы не резалась
           DOMAIN="gitlab.com"
           REPO="OrangeFox/misc/scripts"
           git clone https://$DOMAIN/$REPO.git -b master
           cd scripts
           bash setup/android_build_env.sh
-          # Добавляем --force-sync и --no-clone-bundle, чтобы пробить затык
-          bash ../scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          # Теперь вызываем скрипт
+          bash get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          cd ~/fox/fox_12.1
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
 
       - name: Prepare Device Tree
