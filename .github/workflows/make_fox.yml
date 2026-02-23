@@ -31,14 +31,20 @@ jobs:
           mkdir -p ~/fox && cd ~/fox
           DOMAIN="gitlab.com"
           REPO="OrangeFox/misc/scripts"
-          git clone https://$DOMAIN/$REPO.git -b master
-          cd scripts
+          git clone https://$DOMAIN/$REPO.git -b master scripts_repo
+          cd scripts_repo
+          
+          # Находим, где именно лежит этот неуловимый скрипт
+          SCRIPT_PATH=$(find $(pwd) -name get_fox.sh)
+          echo "Found get_fox.sh at: $SCRIPT_PATH"
+          
+          # Запускаем настройку окружения
           bash setup/android_build_env.sh
-          # Поднимаемся в корень репозитория скриптов, где лежит get_fox.sh
-          cd ..
-          bash scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          
+          # Запускаем сам скрипт получения исходников по найденному пути
+          bash $SCRIPT_PATH ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          
           cd ~/fox/fox_12.1
-          # На всякий случай проверяем путь к repo
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
 
       - name: Prepare Device Tree
