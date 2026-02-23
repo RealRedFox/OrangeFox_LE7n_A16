@@ -30,20 +30,21 @@ jobs:
         run: |
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
-          DOMAIN="gitlab.com"
-          REPO="OrangeFox/misc/scripts"
-          git clone https://$DOMAIN/$REPO.git -b master scripts_repo
           
-          # Находим путь к скрипту и сохраняем в переменную
-          SCRIPT_EXE=$(find $(pwd)/scripts_repo -name get_fox.sh)
-          echo "Script found at: $SCRIPT_EXE"
+          # Скачиваем скрипт получения исходников напрямую (RAW-ссылка)
+          # Это гарантирует, что файл у нас в руках, без всяких поисков
+          curl -sL https://gitlab.com -o get_fox.sh
+          chmod +x get_fox.sh
           
-          # Запускаем настройку окружения внутри папки репозитория
+          # Настраиваем окружение (склонируем репо только для этого)
+          git clone https://gitlab.com -b master scripts_repo
           cd scripts_repo
           bash setup/android_build_env.sh
+          cd ..
           
-          # Запускаем скрипт, явно указывая ПАРАМЕТРЫ
-          bash "$SCRIPT_EXE" "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          # Запускаем скачанный скрипт напрямую
+          # Передаем полный путь к папке и параметры
+          ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
           
           cd ~/fox/fox_12.1
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
