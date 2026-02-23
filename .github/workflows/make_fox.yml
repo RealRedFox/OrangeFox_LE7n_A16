@@ -31,15 +31,15 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Скачиваем ТОЛЬКО скрипт напрямую, не клонируя весь репозиторий
-          # Используем зеркало или прямой RAW (иногда помогает смена протокола)
-          curl -sL https://gitlab.com -o get_fox.sh
-          curl -sL https://gitlab.com -o env_setup.sh
+          # Берем скрипты с зеркала GitHub, чтобы не ловить 403/Cloudflare от GitLab
+          # Это те же самые официальные скрипты OrangeFox
+          curl -sL https://raw.githubusercontent.com -o get_fox.sh
+          curl -sL https://raw.githubusercontent.com -o env_setup.sh
           
           chmod +x get_fox.sh env_setup.sh
           
-          # Запускаем настройку окружения (локальный файл)
-          bash env_setup.sh
+          # Настраиваем окружение
+          bash ./env_setup.sh
           
           # Запускаем основной скрипт
           bash ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
