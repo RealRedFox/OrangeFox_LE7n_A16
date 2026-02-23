@@ -31,20 +31,18 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Скачиваем скрипт получения исходников напрямую (RAW-ссылка)
-          # Это гарантирует, что файл у нас в руках, без всяких поисков
+          # Скачиваем ТОЛЬКО скрипт напрямую, не клонируя весь репозиторий
+          # Используем зеркало или прямой RAW (иногда помогает смена протокола)
           curl -sL https://gitlab.com -o get_fox.sh
-          chmod +x get_fox.sh
+          curl -sL https://gitlab.com -o env_setup.sh
           
-          # Настраиваем окружение (склонируем репо только для этого)
-          git clone https://gitlab.com -b master scripts_repo
-          cd scripts_repo
-          bash setup/android_build_env.sh
-          cd ..
+          chmod +x get_fox.sh env_setup.sh
           
-          # Запускаем скачанный скрипт напрямую
-          # Передаем полный путь к папке и параметры
-          ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          # Запускаем настройку окружения (локальный файл)
+          bash env_setup.sh
+          
+          # Запускаем основной скрипт
+          bash ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
           
           cd ~/fox/fox_12.1
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
