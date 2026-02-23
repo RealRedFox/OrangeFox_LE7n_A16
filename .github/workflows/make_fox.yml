@@ -26,19 +26,21 @@ jobs:
           sudo apt update
           sudo apt install -y bc build-essential flex bison g++-multilib gcc-multilib git gnupg gperf lib32ncurses-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
 
-      - name: Sync OrangeFox Sources
+       - name: Sync OrangeFox Sources
         run: |
           mkdir -p ~/fox && cd ~/fox
-          # Собираем ссылку по частям, чтобы не резалась
           DOMAIN="gitlab.com"
           REPO="OrangeFox/misc/scripts"
           git clone https://$DOMAIN/$REPO.git -b master
           cd scripts
           bash setup/android_build_env.sh
-          # Теперь вызываем скрипт
-          bash get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          # Поднимаемся в корень репозитория скриптов, где лежит get_fox.sh
+          cd ..
+          bash scripts/get_fox.sh ~/fox/fox_12.1 --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
           cd ~/fox/fox_12.1
+          # На всякий случай проверяем путь к repo
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
+
 
       - name: Prepare Device Tree
         run: |
