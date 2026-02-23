@@ -31,18 +31,17 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Берем скрипты с зеркала GitHub, чтобы не ловить 403/Cloudflare от GitLab
-          # Это те же самые официальные скрипты OrangeFox
-          curl -sL https://raw.githubusercontent.com -o get_fox.sh
-          curl -sL https://raw.githubusercontent.com -o env_setup.sh
+          # Прямые ссылки на RAW-контент (только код, никакого HTML)
+          curl -sL "https://raw.githubusercontent.com" -o get_fox.sh
+          curl -sL "https://raw.githubusercontent.com" -o env_setup.sh
           
           chmod +x get_fox.sh env_setup.sh
           
           # Настраиваем окружение
-          bash ./env_setup.sh
+          ./env_setup.sh
           
           # Запускаем основной скрипт
-          bash ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
+          ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
           
           cd ~/fox/fox_12.1
           repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
