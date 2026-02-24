@@ -31,20 +31,17 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Прямые ссылки на RAW-контент (только код, никакого HTML)
-          curl -sL "https://raw.githubusercontent.com" -o get_fox.sh
-          curl -sL "https://raw.githubusercontent.com" -o env_setup.sh
+          # Клонируем официальные скрипты OrangeFox
+          git clone https://gitlab.com -b master scripts
           
-          chmod +x get_fox.sh env_setup.sh
+          # Устанавливаем переменные окружения напрямую через скрипт из репозитория
+          cd scripts
+          bash setup/android_build_env.sh
           
-          # Настраиваем окружение
-          ./env_setup.sh
-          
-          # Запускаем основной скрипт
-          ./get_fox.sh "$HOME/fox/fox_12.1" --branch 12.1 --depth 1 --force-sync --no-clone-bundle --no-tags
-          
-          cd ~/fox/fox_12.1
-          repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
+          # Запускаем загрузку исходников (ветка 12.1)
+          # Мы используем прямой вызов скрипта из папки scripts
+          cd ..
+          bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
       - name: Prepare Device Tree
         run: |
