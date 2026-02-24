@@ -31,9 +31,8 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          https://github.com/OrangeFoxRecovery/scripts.git
-          
-          git clone https://github.com scripts
+          # Теперь команда git clone прописана верно:
+          git clone https://github.com/OrangeFoxRecovery/scripts.git scripts
           
           cd scripts
           bash setup/android_build_env.sh
