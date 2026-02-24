@@ -31,14 +31,13 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Клонируем официальное зеркало скриптов на GitHub (чтобы избежать 404/403 от GitLab)
-          git clone https://github.com -b master scripts
+          https://github.com/OrangeFoxRecovery/scripts.git
           
-          # Настраиваем окружение
+          git clone https://github.com scripts
+          
           cd scripts
           bash setup/android_build_env.sh
           
-          # Запускаем загрузку исходников (ветка 12.1)
           cd ..
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
