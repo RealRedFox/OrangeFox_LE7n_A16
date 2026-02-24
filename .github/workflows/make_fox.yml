@@ -31,12 +31,17 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Теперь команда git clone прописана верно:
-          git clone https://github.com/OrangeFoxRecovery/scripts.git scripts
+          # Используем прямой клон через официальный домен без запроса пароля
+          git clone --depth=1 https://github.com/OrangeFoxRecovery/scripts.git
           
+          # Проверяем, что скачалось
+          ls -R scripts
+          
+          # Запускаем подготовку
           cd scripts
           bash setup/android_build_env.sh
           
+          # Качаем исходники Лисы
           cd ..
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
