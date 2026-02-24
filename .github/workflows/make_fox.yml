@@ -31,15 +31,14 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Клонируем официальные скрипты OrangeFox
-          git clone https://gitlab.com -b master scripts
+          # Клонируем официальное зеркало скриптов на GitHub (чтобы избежать 404/403 от GitLab)
+          git clone https://github.com -b master scripts
           
-          # Устанавливаем переменные окружения напрямую через скрипт из репозитория
+          # Настраиваем окружение
           cd scripts
           bash setup/android_build_env.sh
           
           # Запускаем загрузку исходников (ветка 12.1)
-          # Мы используем прямой вызов скрипта из папки scripts
           cd ..
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
