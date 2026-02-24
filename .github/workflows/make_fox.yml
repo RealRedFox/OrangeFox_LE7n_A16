@@ -31,13 +31,19 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # УДАЛИ ПРОБЕЛЫ В ССЫЛКЕ НИЖЕ:
-          # h t t p s : / / g i t h u b . c o m / O r a n g e F o x R e c o v e r y / s c r i p t s . g i t
-          git clone https://github.com/OrangeFoxRecovery/scripts.git
+          # Скачиваем архив скриптов напрямую (без git clone и паролей)
+          curl -sL https://github.com/OrangeFoxRecovery/scripts.git -o scripts.tar.gz
+          tar -xzf scripts.tar.gz
+          mv scripts-master scripts
           
+          # Проверяем, что файлы на месте (увидишь список в логе)
+          ls -F scripts/setup/
+          
+          # Запускаем подготовку окружения
           cd scripts
           bash setup/android_build_env.sh
           
+          # Запускаем основной скрипт загрузки исходников (ветка 12.1)
           cd ..
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
