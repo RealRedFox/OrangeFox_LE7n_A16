@@ -31,20 +31,23 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
-          # Скачиваем архив скриптов напрямую (без git clone и паролей)
-          curl -sL https://github.com/OrangeFoxRecovery/scripts.git -o scripts.tar.gz
-          tar -xzf scripts.tar.gz
-          mv scripts-master scripts
+          # Используем протокол git:// вместо https:// (его фильтры обычно не режут)
+          # ВАЖНО: Проверь, чтобы строка ниже была БЕЗ ПРОБЕЛОВ в твоем редакторе
+          git clone --depth=1 git://github.com/OrangeFoxRecovery/scripts.git || git clone --depth=1 https://github.com/OrangeFoxRecovery/scripts.git
           
-          # Проверяем, что файлы на месте (увидишь список в логе)
-          ls -F scripts/setup/
+          # Если гит совсем упадет, создадим структуру вручную и скачаем ОДИН файл
+          if [ ! -d "scripts" ]; then
+            mkdir -p scripts/setup
+            curl -sL "https://raw.githubusercontent.com" -o scripts/get_fox.sh
+            curl -sL "https://raw.githubusercontent.com" -o scripts/setup/android_build_env.sh
+          fi
           
-          # Запускаем подготовку окружения
-          cd scripts
-          bash setup/android_build_env.sh
+          chmod +x scripts/get_fox.sh scripts/setup/android_build_env.sh
           
-          # Запускаем основной скрипт загрузки исходников (ветка 12.1)
-          cd ..
+          # Настраиваем окружение
+          bash scripts/setup/android_build_env.sh
+          
+          # Качаем исходники Лисы
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
 
       - name: Prepare Device Tree
