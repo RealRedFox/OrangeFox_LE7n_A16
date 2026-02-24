@@ -34,7 +34,7 @@ jobs:
           cd ~/fox
           
           # Клонируем через токен самого GitHub (это "пропуск вездехода")
-          git clone --depth=1 https://x-access-token:${GH_TOKEN}@://github.com/OrangeFoxRecovery/scripts.git
+          git clone --depth=1 https://x-access-token:${GH_TOKEN}@github.com/OrangeFoxRecovery/scripts.git
           
           if [ -d "scripts" ]; then echo "ПОБЕДА: Скрипты на базе!"; else exit 1; fi
           
