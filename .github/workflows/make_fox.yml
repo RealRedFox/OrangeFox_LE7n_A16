@@ -31,23 +31,19 @@ jobs:
           mkdir -p ~/fox/fox_12.1
           cd ~/fox
           
+          # Заставляем Git использовать токен самого GitHub для всех ссылок
+          # Это уберет нужду в Username раз и навсегда
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+          
           # ВСТАВЬ ВМЕСТО [OF-ADDR] ПОЛНЫЙ АДРЕС С HTTPS
           git clone --depth=1 https://github.com/OrangeFoxRecovery/scripts.git scripts
           
-          if [ -d "scripts" ]; then 
-            echo "ПОБЕДА: Скрипты на базе!"; 
-          else 
-            echo "Ошибка: папка не создана"; exit 1; 
-          fi
-          
-          # Настраиваем окружение
           cd scripts
           bash setup/android_build_env.sh
           
-          # Качаем исходники Лисы
           cd ..
           bash scripts/get_fox.sh ~/fox/fox_12.1 12.1
-
+          
       - name: Prepare Device Tree
         run: |
           # Переносим твою папку device в дерево сборки
