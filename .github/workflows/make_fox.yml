@@ -33,10 +33,10 @@ jobs:
           
           # Заставляем Git использовать токен самого GitHub для всех ссылок
           # Это уберет нужду в Username раз и навсегда
-          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+          # git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
           
           # ВСТАВЬ ВМЕСТО [OF-ADDR] ПОЛНЫЙ АДРЕС С HTTPS
-          git clone --depth=1 https://github.com/OrangeFoxRecovery/scripts.git scripts
+          git clone --depth=1 https://gitlab.com/OrangeFox/misc/scripts.git scripts
           
           cd scripts
           bash setup/android_build_env.sh
